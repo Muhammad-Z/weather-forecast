@@ -1,0 +1,112 @@
+* {
+  box-sizing: border-box;
+}
+
+div {
+  width: 100%;
+}
+
+body {
+  margin: 0 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  background-color: lightskyblue;
+  padding: 1rem;
+}
+
+header * {
+  color: white;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+
+input {
+  width: 100%;
+  border-radius: 12px;
+  border: none;
+  padding: 0.5rem;
+}
+
+.search-place {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+main {
+  background-color: lightgray;
+  display: flex;
+  flex-direction: center;
+  padding: 1rem;
+}
+
+.day-card {
+  width: 30vw;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: black;
+  background-color: white;
+}
+
+
+
+/*    */
+/**/
+/*    */
+
+.search-container {
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  column-gap: 20px;
+  z-index: 1;
+  right: 0;
+  left: 0;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  position: absolute;
+}
+
+.search-container li {
+  border-bottom: 1px solid #b7b5b5;
+  background-color: white;
+  text-align: center;
+}
+
+.fill-bottom-rad {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.search-container li:last-child {
+  border: none;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.header-overlay {
+  width: 100%;
+  min-width: 800px;
+  height: 120px;
+  background-color: lightgrey;
+  position: absolute;
+}
