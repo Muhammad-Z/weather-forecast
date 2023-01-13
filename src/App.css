@@ -51,8 +51,15 @@ input {
 main {
   background-color: lightgray;
   display: flex;
-  flex-direction: center;
+  flex-direction: column;
   padding: 1rem;
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  overflow-x: scroll;
 }
 
 .day-card {
@@ -93,8 +100,8 @@ main {
 }
 
 .fill-bottom-rad {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .search-container li:last-child {
