@@ -18,9 +18,9 @@ export default function CardsContainer() {
 
   console.log('forecast now is ', forecast);
 
-  return (<>
-    { forecast?.forecast5Days ?  forecast.forecast5Days.map(elem => <DayCard key={elem.date} day={elem.date} temp={elem.temp_avg} /> )  
-    :null}
-  </>
+  return (<div className="cards-container">
+    {forecast?.forecast5Days ? forecast.forecast5Days.map((elem,index) => <DayCard key={elem.date} day={elem.date} temp={elem.temp_avg} index={index} />)
+      : null}
+  </div>
   )
 }

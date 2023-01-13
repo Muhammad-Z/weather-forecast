@@ -6,6 +6,7 @@ import {
   BarElement,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { useForecast } from './ForecastContext';
 
 
 ChartJS.register(
@@ -19,6 +20,17 @@ export const options = {
   plugins: {
 
   },
+  scales: {
+    x: {
+      grid: {
+        display: false
+      },
+    },
+    y: {
+      grid: {
+        display: false
+      },
+    }}
 };
 
 const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
@@ -35,5 +47,16 @@ export const data = {
 };
 
 export default function RainChart() {
-  return <Bar options={options} data={data} />;
+  const forecast = useForecast();
+  
+  return (forecast.forecast5Days && <Bar options={options} data={{
+    labels:forecast.forecast5Days[forecast.selectedDay].time,
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: forecast.forecast5Days[forecast.selectedDay].rain,
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+    ],
+  }} />);
 }
