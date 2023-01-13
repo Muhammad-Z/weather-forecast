@@ -43,6 +43,10 @@ DailyForecast (array of 5 objects)
 
 /* make animation to move periodically and show day/night info */
 
+
+/* each day is an object: {date, temp, humidity, rain} 
+each attribute (except the date) is an array each index represent a 3 hours */
+
 export function serializeForecast5days(data) {
   const arr = [];
   const unixTime = new Date(0);
@@ -52,7 +56,7 @@ export function serializeForecast5days(data) {
     const lastArrIndex = arr.length - 1;
 
     if (arr[lastArrIndex]?.date !== dayDate) { //create new entry
-      arr.push({ date: dayDate, temp_avg: 0, list: [] })
+      arr.push({ date: dayDate, temp_avg: 0, time: [], temp: [], rain: [], humidity: [], wind: [], list: [] })
       return;
     }
 
@@ -64,17 +68,14 @@ export function serializeForecast5days(data) {
       ((arr[lastArrIndex].temp_avg * curListLeng)
         + elem.main.temp) / (curListLeng + 1)).toFixed(2);
 
-    arr[lastArrIndex].list.push({
-      hour: unixTime.getHours(),
-      minute: unixTime.getMinutes(),
-      temperature: elem.main.temp,
-      wind: {
-        speed: elem.wind.speed,
-        direction: elem.wind.deg,
-      },
-      humidity: elem.main.humidity,
-      rain: rain,
-    })
+    arr[lastArrIndex].temp.push(elem.main.temp);
+    arr[lastArrIndex].wind.push({
+      speed: elem.wind.speed,
+      direction: elem.wind.deg,
+    });
+    arr[lastArrIndex].humidity.push(elem.main.humidity);
+    arr[lastArrIndex].rain.push(rain);
+    arr[lastArrIndex].time.push(`${unixTime.getHours()}:${unixTime.getMinutes()}`);
   })
   return arr;
 }
