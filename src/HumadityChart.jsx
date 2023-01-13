@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForecast } from './ForecastContext.jsx';
 
 import {
@@ -21,6 +21,22 @@ ChartJS.register(
 
 const options = {
   responsive: true,
+  scales: {
+    x: {
+      grid: {
+        display: false
+      },
+    },
+    y: {
+      grid: {
+        display: false
+      },
+      stepValue: 1,
+      /*   min: 80,
+        max: 100, */
+      display: false,
+    }
+  },
   plugins: {
     datalabels: {
       color: 'yellow',
@@ -32,7 +48,7 @@ const options = {
           weight: 'bold'
         },
         value: {
-          color: 'red',
+          color: 'black',
         }
       }
     }
@@ -41,33 +57,17 @@ const options = {
 
 export function HumadityChart() {
   const forecast = useForecast();
-  const [chartInfo, setChartInfo] = useState(false);
 
-  const chartLabels = [];
-  const chartData = [];
-
-  if (forecast?.forecast5Days) {
-    forecast.forecast5Days[0].list.map((elem, index) => {
-      chartLabels[index] = `${elem.hour}:${elem.minute}`
-      chartData[index] = elem.humidity
-    });
-    if (!chartInfo)
-      setChartInfo({ chartLabels: chartLabels, chartData: chartData });
-  }
-
-  const data = {
-    labels: chartInfo.chartLabels,
+  return (forecast.forecast5Days && <Line options={options} data={{
+    labels: forecast.forecast5Days[forecast.selectedDay].time,
     datasets: [
       {
         label: 'Dataset 1',
-        data: chartInfo.chartData,
-        borderColor: 'rgb(255, 99, 132)',
+        data: forecast.forecast5Days[forecast.selectedDay].humidity,
+        borderColor: 'blue',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        tension: 0.3
+        tension: 0.5
       },
     ],
-  };
-
-
-  return (chartInfo && <Line options={options} data={data} />);
+  }} />);
 }
