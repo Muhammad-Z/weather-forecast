@@ -28,7 +28,7 @@ export function serializeCities(res) {
 }
 
 
-/* for 5days forecast response (object) I need:
+/* for fiveDays forecast response (object) I need:
 DailyForecast (array of 5 objects)
   Date
   Temperature.Minimum {Value, Unit}
@@ -43,7 +43,7 @@ DailyForecast (array of 5 objects)
 
 /* make animation to move periodically and show day/night info */
 
-export function serializeForecast5days(data) {
+export function serializefiveDays(data) {
   const arr = [];
   const unixTime = new Date(0);
 

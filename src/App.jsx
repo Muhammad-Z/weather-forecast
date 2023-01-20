@@ -2,20 +2,27 @@ import Header from './Header';
 import Main from './Main';
 import './App.css';
 import './weather-icons.min.css';
-import { ForecastProvider } from './ForecastContext';
-import { useState } from 'react';
+import { useEffect, useState, createContext, useContext } from 'react';
+import { useForecast, useForecastDispatch } from './ForecastContext';
+import LoadingSpinner from './LoadingSpinner.jsx';
 
 export default function App() {
-  const [renderKey, setRenderKey] = useState(Date.now());
-  console.log('yo sup')
+  const ThemeContext = createContext(null);
 
-  return (
-    <>
-      <ForecastProvider>
-        <Header key={renderKey} setRenderKey={setRenderKey} />
-        <Main />
-      </ForecastProvider>
-    </>
+  const forecast = useForecast();
+  const [isLoading, setIsLoading] = useState(true);
+  const [theme, setTheme] = useState('light-theme');
+
+  useEffect(() => {
+    if (forecast.location) setIsLoading(false);
+  }, [forecast])
+
+  //{/*  */}
+  return (<ThemeContext.Provider value={theme}>
+    <Header setTheme={setTheme} />
+    {isLoading ? <div className="loading-container"><LoadingSpinner /></div>
+      : <Main />}
+  </ThemeContext.Provider>
   )
 }
 

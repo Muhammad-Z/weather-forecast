@@ -13,14 +13,16 @@ country.EnglishName */
 export function serializeCities(res) {
   console.log(res);
   return (
-    res.data.map(elem => ({
+    res.map(elem => ({
       /*  key: elem.key, */
-      lat: elem.lat,
-      lon: elem.lon,
-      englishName: elem.name,
+      loc: {
+        lat: elem.lat,
+        lon: elem.lon,
+      },
+      name: elem.name,
       /* localizedName: elem.LocalizedName, */
       country: {
-        englishName: elem.country,
+        name: elem.country,
         /*  localizedName: elem.country.LocalizedName, */
       }
     }))
@@ -28,7 +30,7 @@ export function serializeCities(res) {
 }
 
 
-/* for 5days forecast response (object) I need:
+/* for fiveDays forecast response (object) I need:
 DailyForecast (array of 5 objects)
   Date
   Temperature.Minimum {Value, Unit}
@@ -47,42 +49,57 @@ DailyForecast (array of 5 objects)
 /* each day is an object: {date, temp, humidity, rain} 
 each attribute (except the date) is an array each index represent a 3 hours */
 
-export function serializeForecast5days(data) {
+export function serializefiveDays(data) {
   const arr = [];
-  const unixTime = new Date(0);
-
   data.list.map(elem => {
+    const unixTime = new Date(0);
+
     const dayDate = elem.dt_txt.split(" ")[0];
     const lastArrIndex = arr.length - 1;
+    unixTime.setUTCSeconds(elem.dt);
+ 
+    let day = unixTime.toLocaleDateString("en-us", {weekday: 'long'});
 
     if (arr[lastArrIndex]?.date !== dayDate) { //create new entry
-      arr.push({ date: dayDate, temp_avg: 0, time: [], temp: [], rain: [], humidity: [], wind: [], list: [] })
+      arr.push({ date: dayDate, epoch: day, temp_avg: 0, time: [], temp: { max: -Infinity, min: +Infinity, list: [] }, rain: { max: -Infinity, min: +Infinity, list: [] }, humidity: { max: -Infinity, min: +Infinity, list: [] }, wind: { max: -Infinity, min: +Infinity, list: [] }, list:[] })
       return;
     }
 
     //else append to it
-    unixTime.setUTCSeconds(elem.dt);
+   
     let rain = elem?.rain ? elem.rain["3h"] : 0;
     const curListLeng = arr[lastArrIndex].list.length;
     arr[lastArrIndex].temp_avg = (
       ((arr[lastArrIndex].temp_avg * curListLeng)
         + elem.main.temp) / (curListLeng + 1)).toFixed(2);
 
-    arr[lastArrIndex].temp.push(elem.main.temp);
-    arr[lastArrIndex].wind.push({
+    arr[lastArrIndex].temp.list.push(elem.main.temp);
+    if (elem.main.temp > arr[lastArrIndex].temp.max) arr[lastArrIndex].temp.max = elem.main.temp;
+    if (elem.main.temp < arr[lastArrIndex].temp.min) arr[lastArrIndex].temp.min = elem.main.temp;
+
+    arr[lastArrIndex].wind.list.push({
       speed: elem.wind.speed,
       direction: elem.wind.deg,
     });
-    arr[lastArrIndex].humidity.push(elem.main.humidity);
-    arr[lastArrIndex].rain.push(rain);
-    arr[lastArrIndex].time.push(`${unixTime.getHours()}:${unixTime.getMinutes()}`);
+    if (elem.wind.speed > arr[lastArrIndex].wind.max) arr[lastArrIndex].wind.max = elem.wind.speed;
+    if (elem.wind.speed < arr[lastArrIndex].wind.min) arr[lastArrIndex].wind.min = elem.wind.speed;
+
+    arr[lastArrIndex].humidity.list.push(elem.main.humidity);
+    if (elem.main.humidity > arr[lastArrIndex].humidity.max) arr[lastArrIndex].humidity.max = elem.main.humidity;
+    if (elem.main.humidity < arr[lastArrIndex].humidity.min) arr[lastArrIndex].humidity.min = elem.main.humidity;
+
+    arr[lastArrIndex].rain.list.push(rain);
+    if (rain > arr[lastArrIndex].rain.max) arr[lastArrIndex].rain.max = rain;
+    if (rain < arr[lastArrIndex].rain.min) arr[lastArrIndex].rain.min = rain;
+
+    arr[lastArrIndex].time.push(`${unixTime.getUTCHours()}:${unixTime.getUTCMinutes()}`);
   })
   return arr;
 }
 
 
 export function serializeForecast12Hours(data) {
-  return (data.map(data => {
+  return /* (data.map(data => {
     const unixTime = new Date(0);
     unixTime.setUTCSeconds(data.EpochDateTime);
     return ({
@@ -96,5 +113,5 @@ export function serializeForecast12Hours(data) {
       humidity: data.RelativeHumidity,
       rain: data.Rain.Value,
     })
-  }))
+  })) */
 }

@@ -19,90 +19,81 @@ ChartJS.register(
   ChartDataLabels
 );
 
-const options = {
-  responsive: true,
-  parsing: {
-    xAxisKey: 'speed',
-    yAxisKey: 'direction'
-  },
-  scales: {
-    x: {
-      grid: {
-        display: false
-      },
-    },
-    y: {
-      grid: {
-        display: false
-      },
-      stepValue: 1,
-      /*   min: 80,
-        max: 100, */
-      display: false,
-    }
-  },
-  plugins: {
-    datalabels: {
-      color: 'yellow',
-      anchor: 'end',
-      align: 'top',
-      display: false,
-      labels: {
-        font: {
-          weight: 'bold'
-        },
-        value: {
-          display: true,
-          color: 'black',
-          formatter: (value, ctx) => { return value.speed * -1 },
-        },
-        pointLabel: {
-          display: true,
-          anchor: 'center',
-          align: 'center',
-          color: 'red',
-          font: {
-            family: 'weathericons'
-          },
-          formatter: function (value, ctx) {
-            return value.direction
-          }
-        }
-      }
-    }
-  }
-};
+import chartGlobalOptions from './chartGlobalOptions.jsx';
 
-
-/* switch (value.direction) {
-  case 0: case 360: return '';
-  case 90: return '';
-  case 180: return '';
-  case 270: return '';
-  default: {
-    if (value.direction < 90) return '';
-    if (value.direction < 180) return '';
-    if (value.direction < 270) return '';
-    if (value.direction < 360) return '';
-  }
-} */
 
 export default function WindChart() {
   const forecast = useForecast();
+  const globeOptions = chartGlobalOptions(forecast.fiveDays[forecast.selectedDay].wind);
 
+  var style = getComputedStyle(document.getElementById('root'));
+  var labelColor = (style.getPropertyValue('--main-font-color'));
 
-  return (forecast.forecast5Days && <Line options={options} data={{
-    labels: forecast.forecast5Days[forecast.selectedDay].time,
-    datasets: [
-      {
-        label: 'Dataset 1',
-        data: forecast.forecast5Days[forecast.selectedDay].wind.map(
-          elem => ({ speed: elem.speed, direction: elem.direction })),
-        borderColor: 'blue',
-        pointRadius: 10,
-        pointHoverRadius: 10,
-        pointBackgroundColor: 'white',
+  return (<div className="box">
+    <h2>Wind</h2>
+    <Line options={{
+      ...globeOptions,
+      parsing: {
+        yAxisKey: 'speed',
+        xAxisKey: 'time',
       },
-    ],
-  }} />);
+
+      plugins: {
+        datalabels: {
+          color: globeOptions.plugins.datalabels.color,
+          anchor: 'end',
+          align: 'top',
+          display: false,
+   
+          labels: {
+            font: {
+              weight: 'bold'
+            },
+            value: {
+              display: true,
+            /*   color: 'black', */
+              formatter: (value, ctx) => { return value.speed },
+            },
+            pointLabel: {
+              display: true,
+              anchor: 'center',
+              align: 'center',
+              color: labelColor,
+              font: {
+                family: 'weathericons',
+                weight: 'bold',
+                size: 20,
+              },
+              formatter: function (value, ctx) {
+                switch (value.direction) {
+                  case 0: case 360: return '';
+                  case 90: return '';
+                  case 180: return '';
+                  case 270: return '';
+                  default: {
+                    if (value.direction < 90) return '';
+                    if (value.direction < 180) return '';
+                    if (value.direction < 270) return '';
+                    if (value.direction < 360) return '';
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }} data={{
+      labels: forecast.fiveDays[forecast.selectedDay].time,
+      datasets: [
+        {
+          label: 'Dataset 1',
+          data: forecast.fiveDays[forecast.selectedDay].wind.list.map(
+            (elem, index) => ({ speed: elem.speed, direction: elem.direction, time: forecast.fiveDays[forecast.selectedDay].time[index] })),
+     /*      borderColor: 'blue', */
+          pointRadius: 10,
+          pointHoverRadius: 10,
+         /*  pointBackgroundColor: 'white', */
+        },
+      ],
+    }} /></div>);
 }

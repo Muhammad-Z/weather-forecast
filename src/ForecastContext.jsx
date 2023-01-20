@@ -41,10 +41,10 @@ function forecastReducer(forecast, action) {
         currentWeather: action.payload
       })
     }
-    case 'loadForecast5Days': {
+    case 'loadfiveDays': {
       return ({
         ...forecast,
-        forecast5Days: action.payload
+        fiveDays: action.payload
       })
     }
     case 'loadForecast12Hours': {
@@ -60,6 +60,7 @@ function forecastReducer(forecast, action) {
         selectedDay: action.payload
       })
     }
+
     default: {
       throw Error('Unknown action: ' + action.type);
     }

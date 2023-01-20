@@ -25,7 +25,7 @@ export function serializeCities(data) {
 }
 
 
-/* for 5days forecast response (object) I need:
+/* for fiveDays forecast response (object) I need:
 DailyForecast (array of 5 objects)
   Date
   Temperature.Minimum {Value, Unit}
@@ -40,7 +40,7 @@ DailyForecast (array of 5 objects)
 
 /* make animation to move periodically and show day/night info */
 
-export function serializeForecast5days(data) {
+export function serializefiveDays(data) {
   return (data.DailyForecasts.map(dayData => ({
     date: dayData.EpochDateTime,
     temperature: {

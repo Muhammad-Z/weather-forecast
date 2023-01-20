@@ -1,20 +1,8 @@
 import React from 'react';
-import { useForecast } from "./ForecastContext";
 
-export default function CityEntry() {
-  const forecast = useForecast();
+export default function CityEntry({ name, country, loc }) {
 
-  return(
-    <>
-    <div>
-      <ul className="search-container">
-        <li>Result 1</li>
-        <li>Result 2</li>
-        <li>Result 3</li>
-        <li>Result 4</li>
-       
-      </ul>
-    </div>
-    </>
+  return (
+    <li data-lat={loc.lat} data-lon={loc.lon} data-name={name} data-country={country}> {name}, {country}</li>
   )
 }
