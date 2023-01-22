@@ -21,9 +21,9 @@ export default function DayCard({ day, icon, temp, index }) {
     <div className="day-card box" onClick={handleClick} >
       <span>{day}</span>
       <img className={`${animate ? 'animate' : 'hidden'}`}
-        src={`https://openweathermap.org/img/wn/${icon.d}.png`} />
+        src={`https://openweathermap.org/img/wn/${icon.d}.png`} loading="lazy" />
       <img className={`${animate ? 'hidden' : 'animate'}`}
-        src={`https://openweathermap.org/img/wn/${icon.n}.png`} />
+        src={`https://openweathermap.org/img/wn/${icon.n}.png`} loading="lazy" />
       <span>{temp}</span>
     </div>
   </>
