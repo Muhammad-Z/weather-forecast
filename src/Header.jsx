@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { getCities } from './api-owm/callAPI';
 import { useForecast, useForecastDispatch } from "./ForecastContext";
 import SearchList from './SearchList';
+import darkIcon from './dark-icon.png';
+import lightIcon from './light-icon.png';
 
 
 export default function Header({ setTheme }) {
@@ -12,7 +14,8 @@ export default function Header({ setTheme }) {
   const [cityQuery, setCityQuery] = useState('');
   const [cityList, setCityList] = useState(false);
   const [listRenderKey, setListRenderKey] = useState(Date('now'));
-
+  /* const [themeIcon, setThemeIcon] = useState('lightIcon');
+ */
   useEffect(() => {
     if (!forecast.location && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(loadPosition);
@@ -59,10 +62,14 @@ export default function Header({ setTheme }) {
         root.classList.remove(item);
         root.classList.add("dark-theme")
         setTheme('dark-theme');
+        document.getElementById("themeImg").classList.remove('light-theme');
+        document.getElementById("themeImg").classList.add('dark-theme');
       } else if (item === "dark-theme") {
         root.classList.remove(item);
         root.classList.add("light-theme")
         setTheme('light-theme');
+        document.getElementById("themeImg").classList.remove('dark-theme');
+        document.getElementById("themeImg").classList.add('light-theme');
       }
     })
 
@@ -72,9 +79,16 @@ export default function Header({ setTheme }) {
   return (<header>
     <div className="row">
       <i className="wi wi-day-cloudy"></i>
-      <h1>Weather Forecast</h1>
+      <div class="title-container">
+        <h1>Weather Forecast</h1>
+        <img id="themeImg" src={
+          document.getElementById("root").classList.contains('light-theme') ?
+            darkIcon : lightIcon
+        } onClick={handleThemeClick}></img>
+      </div>
     </div>
-    <button onClick={handleThemeClick}>Theme</button>
+    {/* <button onClick={handleThemeClick}>Theme</button> */}
+
 
     <div className="row">
       {forecast?.location && <><span className="location">{forecast.location.name}, {forecast.location.country}</span>
