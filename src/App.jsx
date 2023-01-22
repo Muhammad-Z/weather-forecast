@@ -1,6 +1,6 @@
 import Header from './Header';
 import Main from './Main';
-import './App.css';
+import './styles/style.css';
 import './weather-icons.min.css';
 import { useEffect, useState, createContext, useContext } from 'react';
 import { useForecast, useForecastDispatch } from './ForecastContext';
