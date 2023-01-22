@@ -3,13 +3,14 @@ import { useForecastDispatch } from './ForecastContext.jsx';
 
 export default function DayCard({ day, icon, temp, index }) {
   const dispatch = useForecastDispatch();
-  const [animate, setAnimate] = useState('');
-  const [showup, setShowup] = useState(true);
+  
+  const [animate, setAnimate] = useState(true);
   useEffect(() => {
-    setTimeout(() => {
-      if (animate) { setShowup(false); setAnimate(''); }
-      else { setShowup(true); setAnimate('animate'); }
-    }, 5000)
+    let timer = setTimeout(() => {
+      if (animate) { setAnimate(false); }
+      else { setAnimate(true); }
+    }, 3000)
+    return () => clearTimeout(timer)
   }, [animate])
 
   function handleClick() {
@@ -19,9 +20,9 @@ export default function DayCard({ day, icon, temp, index }) {
   return (<>
     <div className="day-card box" onClick={handleClick} >
       <span>{day}</span>
-      <img className={`${showup ? 'animate' : 'hidden'}`}
+      <img className={`${animate ? 'animate' : 'hidden'}`}
         src={`https://openweathermap.org/img/wn/${icon.d}.png`} />
-      <img className={`${showup ? 'hidden' : 'animate'}`}
+      <img className={`${animate ? 'hidden' : 'animate'}`}
         src={`https://openweathermap.org/img/wn/${icon.n}.png`} />
       <span>{temp}</span>
     </div>
