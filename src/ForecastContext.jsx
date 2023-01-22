@@ -67,4 +67,4 @@ function forecastReducer(forecast, action) {
   }
 }
 
-const initialForecast = { selectedDay: 0, };
+const initialForecast = { selectedDay: 1, };
