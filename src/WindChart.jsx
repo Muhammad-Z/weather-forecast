@@ -28,6 +28,7 @@ export default function WindChart() {
 
   var style = getComputedStyle(document.getElementById('root'));
   var labelColor = (style.getPropertyValue('--main-font-color'));
+  var pointBgColor = (style.getPropertyValue('--box-bg-color'));
 
   return (<div className="box">
     <h2>Wind</h2>
@@ -44,14 +45,14 @@ export default function WindChart() {
           anchor: 'end',
           align: 'top',
           display: false,
-   
+
           labels: {
             font: {
               weight: 'bold'
             },
             value: {
               display: true,
-            /*   color: 'black', */
+              /*   color: 'black', */
               formatter: (value, ctx) => { return value.speed },
             },
             pointLabel: {
@@ -89,9 +90,10 @@ export default function WindChart() {
           label: 'Dataset 1',
           data: forecast.fiveDays[forecast.selectedDay].wind.list.map(
             (elem, index) => ({ speed: elem.speed, direction: elem.direction, time: forecast.fiveDays[forecast.selectedDay].time[index] })),
-     /*      borderColor: 'blue', */
+          /*      borderColor: 'blue', */
           pointRadius: 10,
           pointHoverRadius: 10,
+          pointBackgroundColor: pointBgColor,
          /*  pointBackgroundColor: 'white', */
         },
       ],

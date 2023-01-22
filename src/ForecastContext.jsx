@@ -31,7 +31,7 @@ function forecastReducer(forecast, action) {
   switch (action.type) {
     case 'loadLocation': {
       return ({
-        ...forecast,
+        ...initialForecast,
         location: action.payload
       })
     }

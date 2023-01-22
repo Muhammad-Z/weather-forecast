@@ -13,7 +13,7 @@ country.EnglishName */
 export function serializeCities(res) {
   console.log(res);
   return (
-    res.map(elem => ({
+    res.data.map(elem => ({
       /*  key: elem.key, */
       loc: {
         lat: elem.lat,
@@ -50,30 +50,31 @@ DailyForecast (array of 5 objects)
 each attribute (except the date) is an array each index represent a 3 hours */
 
 export function serializefiveDays(data) {
+  console.log('tho the data is ', data)
   const arr = [];
-  data.list.map(elem => {
+  data.data.list.map(elem => {
     const unixTime = new Date(0);
 
     const dayDate = elem.dt_txt.split(" ")[0];
     const lastArrIndex = arr.length - 1;
     unixTime.setUTCSeconds(elem.dt);
- 
-    let day = unixTime.toLocaleDateString("en-us", {weekday: 'long'});
+
+    let day = unixTime.toLocaleDateString("en-us", { weekday: 'long' });
 
     if (arr[lastArrIndex]?.date !== dayDate) { //create new entry
-      arr.push({ date: dayDate, epoch: day, temp_avg: 0, time: [], temp: { max: -Infinity, min: +Infinity, list: [] }, rain: { max: -Infinity, min: +Infinity, list: [] }, humidity: { max: -Infinity, min: +Infinity, list: [] }, wind: { max: -Infinity, min: +Infinity, list: [] }, list:[] })
+      arr.push({ date: dayDate, epoch: day, temp_avg: 0, time: [], weather: {d: {icon: '0'}, n: {icon: '0'}}, temp: { max: -Infinity, min: +Infinity, list: [] }, rain: { max: -Infinity, min: +Infinity, list: [] }, humidity: { max: -Infinity, min: +Infinity, list: [] }, wind: { max: -Infinity, min: +Infinity, list: [] }, list: [] })
       return;
     }
 
     //else append to it
-   
+
     let rain = elem?.rain ? elem.rain["3h"] : 0;
     const curListLeng = arr[lastArrIndex].list.length;
     arr[lastArrIndex].temp_avg = (
       ((arr[lastArrIndex].temp_avg * curListLeng)
-        + elem.main.temp) / (curListLeng + 1)).toFixed(2);
+        + elem.main.temp) / (curListLeng + 1)).toFixed(1);
 
-    arr[lastArrIndex].temp.list.push(elem.main.temp);
+    arr[lastArrIndex].temp.list.push(elem.main.temp.toFixed(1));
     if (elem.main.temp > arr[lastArrIndex].temp.max) arr[lastArrIndex].temp.max = elem.main.temp;
     if (elem.main.temp < arr[lastArrIndex].temp.min) arr[lastArrIndex].temp.min = elem.main.temp;
 
@@ -93,9 +94,16 @@ export function serializefiveDays(data) {
     if (rain < arr[lastArrIndex].rain.min) arr[lastArrIndex].rain.min = rain;
 
     arr[lastArrIndex].time.push(`${unixTime.getUTCHours()}:${unixTime.getUTCMinutes()}`);
+
+    //set icon
+    let icn = elem.weather[0].icon;
+    if (icn.substr(0, 2) > arr[lastArrIndex].weather[icn.substr(2)].icon)
+      arr[lastArrIndex].weather[icn.substr(2)].icon = icn
   })
+  console.log('now arr is ', arr)
   return arr;
 }
+
 
 
 export function serializeForecast12Hours(data) {

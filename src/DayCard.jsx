@@ -10,8 +10,7 @@ export default function DayCard({ day, icon, temp, index }) {
   return (
     <div className="day-card box" onClick={handleClick} >
       <span>{day}</span>
-      <img src={icon} />
-      <i className="wi wi-night-sleet"></i>
+      <img src={`https://openweathermap.org/img/wn/${icon}.png`} />
       <span>{temp}</span>
     </div>
   )

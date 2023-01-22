@@ -4,16 +4,30 @@ import RainChart from "./RainChart";
 import WindChart from "./WindChart";
 import { useForecast, useForecastDispatch } from './ForecastContext';
 import { useEffect } from "react";
-import { getfiveDays } from "./api-owm/callAPI";
+import { getfiveDays, getReverseGeo } from "./api-owm/callAPI";
 
 
 export default function Main() {
   const forecast = useForecast();
   const dispatch = useForecastDispatch();
 
+
+
   useEffect(() => {
-    if (forecast?.location && !forecast.fiveDays) {
-      dispatch({ type: 'loadfiveDays', payload: getfiveDays() });
+    if (forecast?.location && !Array.isArray(forecast.fiveDays)) {
+      console.log('forecast.fd', forecast?.fiveDays)
+      
+      if (!forecast.location.name) {
+        getReverseGeo({lat: forecast.location.lat, lon: forecast.location.lon}).then
+        (res => {console.log('da res is ', res);dispatch({ type: 'loadLocation', payload: {
+          ...forecast.location,
+          name: res.data[0].state,
+          country: res.data[0].country,
+        }})})
+      }
+      getfiveDays(forecast.location).then(res => {
+        dispatch({ type: 'loadfiveDays', payload: res })
+      })
     }
   }, [forecast])
 

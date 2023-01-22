@@ -169,3 +169,7 @@ main {
 .box {
   background-color: var(--box-bg-color);
 }
+
+h2 {
+  color: var(--main-font-color);
+}

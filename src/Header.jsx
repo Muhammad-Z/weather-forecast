@@ -4,7 +4,7 @@ import { useForecast, useForecastDispatch } from "./ForecastContext";
 import SearchList from './SearchList';
 
 
-export default function Header({setTheme}) {
+export default function Header({ setTheme }) {
   const dispatch = useForecastDispatch();
   const forecast = useForecast();
 
@@ -16,17 +16,16 @@ export default function Header({setTheme}) {
   useEffect(() => {
     if (!forecast.location && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(loadPosition);
-    } else {
-      console.log("Geolocation is not supported by this browser.");
     }
 
 
     function loadPosition(position) {
       console.log('pos , ', position)
+
       dispatch({
         type: 'loadLocation', payload: {
           lat: position.coords.latitude,
-          lon: position.coords.longitude
+          lon: position.coords.longitude,
         }
       })
     }
@@ -34,7 +33,7 @@ export default function Header({setTheme}) {
 
     if (cityQuery) {
       delayTimer = setTimeout(() => {
-        setCityList(getCities(({ cityQuery: cityQuery })))
+        getCities(({ cityQuery: cityQuery })).then(res => setCityList(res));
         setListRenderKey(Date('now'))
 
         //save location lan,lat in state
@@ -66,7 +65,7 @@ export default function Header({setTheme}) {
         setTheme('light-theme');
       }
     })
- 
+
   }
 
 
@@ -84,7 +83,7 @@ export default function Header({setTheme}) {
 
     <div className="search-place">
       <input onInput={handleInput} onFocus={handleFocus}
-        placeholder={cityQuery} />
+        placeholder='Enter a city name' />
       {cityList && <SearchList key={listRenderKey} cityList={cityList} />}
 
     </div>

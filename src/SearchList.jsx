@@ -6,7 +6,7 @@ export default function SearchList({ cityList }) {
 
   function handleCityClick(e) {
     console.log(e.target)
- 
+  
     dispatch({
       type: 'loadLocation', payload: {
         name: e.target.dataset.name,

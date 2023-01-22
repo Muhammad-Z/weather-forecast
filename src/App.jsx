@@ -12,14 +12,14 @@ export default function App() {
   const forecast = useForecast();
   const [isLoading, setIsLoading] = useState(true);
   const [theme, setTheme] = useState('light-theme');
-
+ 
   useEffect(() => {
     if (forecast.location) setIsLoading(false);
   }, [forecast])
 
   //{/*  */}
   return (<ThemeContext.Provider value={theme}>
-    <Header setTheme={setTheme} />
+    <Header setTheme={setTheme}  />
     {isLoading ? <div className="loading-container"><LoadingSpinner /></div>
       : <Main />}
   </ThemeContext.Provider>
