@@ -81,10 +81,12 @@ export default function Header({ setTheme }) {
       <i className="wi wi-day-cloudy"></i>
       <div class="title-container">
         <h1>Weather Forecast</h1>
+        <div className="theme-container"><span>theme</span>
         <img id="themeImg" src={
           document.getElementById("root").classList.contains('light-theme') ?
             darkIcon : lightIcon
         } onClick={handleThemeClick}></img>
+        </div>
       </div>
     </div>
     {/* <button onClick={handleThemeClick}>Theme</button> */}
