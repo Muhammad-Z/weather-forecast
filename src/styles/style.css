@@ -94,6 +94,10 @@ input {
   position: relative;
 }
 
+ul {
+  list-style-type: none;
+}
+
 .visible {
   display: initial;
 }
