@@ -6,6 +6,7 @@ import { useForecast, useForecastDispatch } from './ForecastContext';
 import { useEffect } from "react";
 import { getfiveDays, getReverseGeo } from "./api-owm/callAPI";
 import { useState } from "react";
+import { TempChart } from "./TempChart";
 
 
 export default function Main() {
@@ -37,6 +38,7 @@ export default function Main() {
     <main>
       {forecast?.fiveDays ? <>
         <CardsContainer setSelectedDay={setSelectedDay}/>
+        <TempChart selectedDay={selectedDay} />
         <WindChart selectedDay={selectedDay} />
         <HumadityChart selectedDay={selectedDay} />
         <RainChart selectedDay={selectedDay} />
