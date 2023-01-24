@@ -20,11 +20,13 @@ ChartJS.register(
 
 export default function RainChart({selectedDay}) {
   const forecast = useForecast();
+  if(forecast.fiveDays[selectedDay].rain.list.some(elem => elem !== 0)) {
   const globeOptions = chartGlobalOptions(forecast.fiveDays[selectedDay].rain);
+  console.log('rainy? ', forecast.fiveDays[selectedDay].rain.list)
 
 
   return (<div className="box">
-    <h2>Rain</h2> <div className="rain-container"><Bar options={{ ...globeOptions }} data={{
+    <h2>Rain</h2> <Bar options={{ ...globeOptions }} data={{
       labels: forecast.fiveDays[selectedDay].time,
       datasets: [
         {
@@ -33,5 +35,7 @@ export default function RainChart({selectedDay}) {
           backgroundColor: '#4491FF',
         }
       ]
-    }} /></div></div>);
+    }} /></div>);
+  }
+  else return (<div className="box rain-container"><h2>Rain</h2>No Rain</div>)
 }
