@@ -78,12 +78,13 @@ export function serializefiveDays(data) {
     if (elem.main.temp > arr[lastArrIndex].temp.max) arr[lastArrIndex].temp.max = elem.main.temp;
     if (elem.main.temp < arr[lastArrIndex].temp.min) arr[lastArrIndex].temp.min = elem.main.temp;
 
+    let resWindSpeed = (elem.wind.speed * 3.6).toFixed(1);
     arr[lastArrIndex].wind.list.push({
-      speed: elem.wind.speed,
+      speed: resWindSpeed,
       direction: elem.wind.deg,
     });
-    if (elem.wind.speed > arr[lastArrIndex].wind.max) arr[lastArrIndex].wind.max = elem.wind.speed;
-    if (elem.wind.speed < arr[lastArrIndex].wind.min) arr[lastArrIndex].wind.min = elem.wind.speed;
+    if (resWindSpeed > arr[lastArrIndex].wind.max) arr[lastArrIndex].wind.max = resWindSpeed;
+    if (resWindSpeed < arr[lastArrIndex].wind.min) arr[lastArrIndex].wind.min = resWindSpeed;
 
     arr[lastArrIndex].humidity.list.push(elem.main.humidity);
     if (elem.main.humidity > arr[lastArrIndex].humidity.max) arr[lastArrIndex].humidity.max = elem.main.humidity;
