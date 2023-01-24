@@ -29,7 +29,7 @@ export function HumadityChart({selectedDay}) {
   var labelColor = (style.getPropertyValue('--main-font-color'));
 
   return (<div className="box">
-    <h2>Humidity</h2>
+    <h2>Humidity (%)</h2>
     <Line options={{
       ...globeOptions,
       plugins: {

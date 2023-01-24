@@ -31,7 +31,7 @@ export default function WindChart({selectedDay}) {
   var pointBgColor = (style.getPropertyValue('--box-bg-color'));
 
   return (<div className="box">
-    <h2>Wind</h2>
+    <h2>Wind (Km/h)</h2>
     <Line options={{
       ...globeOptions,
       parsing: {

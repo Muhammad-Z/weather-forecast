@@ -1,5 +1,4 @@
 import React from 'react';
-import blank from './blank.png'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,7 +25,7 @@ export default function RainChart({selectedDay}) {
 
 
   return (<div className="box">
-    <h2>Rain</h2> <Bar options={{ ...globeOptions }} data={{
+    <h2>Rain (mm)</h2> <Bar options={{ ...globeOptions }} data={{
       labels: forecast.fiveDays[selectedDay].time,
       datasets: [
         {
