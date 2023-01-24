@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useForecastDispatch } from './ForecastContext.jsx';
 
-export default function DayCard({ day, icon, temp, index }) {
-  const dispatch = useForecastDispatch();
+export default function DayCard({ day, icon, temp, index, setSelectedDay }) {
+/*   const dispatch = useForecastDispatch(); */
   
   const [animate, setAnimate] = useState(true);
   useEffect(() => {
@@ -14,11 +14,11 @@ export default function DayCard({ day, icon, temp, index }) {
   }, [animate])
 
   function handleClick() {
-    dispatch({ type: 'selectDay', payload: index });
+   setSelectedDay(index);
   }
 
   return (<>
-    <div className="day-card box" onClick={handleClick} >
+    <div className={`day-card box ${animate ? '' : 'dang'}`} tabIndex="-1" onClick={handleClick} >
       <span>{day}</span>
       <img className={`${animate ? 'animate' : 'hidden'}`}
         src={`https://openweathermap.org/img/wn/${icon.d}.png`} loading="lazy" />

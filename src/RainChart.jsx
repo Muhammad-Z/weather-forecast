@@ -1,4 +1,5 @@
 import React from 'react';
+import blank from './blank.png'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,20 +18,20 @@ ChartJS.register(
 );
 
 
-export default function RainChart() {
+export default function RainChart({selectedDay}) {
   const forecast = useForecast();
-  const globeOptions = chartGlobalOptions(forecast.fiveDays[forecast.selectedDay].rain);
+  const globeOptions = chartGlobalOptions(forecast.fiveDays[selectedDay].rain);
 
 
   return (<div className="box">
-    <h2>Rain</h2> <Bar options={{ ...globeOptions }} data={{
-      labels: forecast.fiveDays[forecast.selectedDay].time,
+    <h2>Rain</h2> <div className="rain-container"><Bar options={{ ...globeOptions }} data={{
+      labels: forecast.fiveDays[selectedDay].time,
       datasets: [
         {
           label: 'Dataset 1',
-          data: forecast.fiveDays[forecast.selectedDay].rain.list,
+          data: forecast.fiveDays[selectedDay].rain.list,
           backgroundColor: '#4491FF',
-        },
-      ],
-    }} /></div>);
+        }
+      ]
+    }} /></div></div>);
 }

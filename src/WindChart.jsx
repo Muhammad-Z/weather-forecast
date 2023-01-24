@@ -22,9 +22,9 @@ ChartJS.register(
 import chartGlobalOptions from './chartGlobalOptions.jsx';
 
 
-export default function WindChart() {
+export default function WindChart({selectedDay}) {
   const forecast = useForecast();
-  const globeOptions = chartGlobalOptions(forecast.fiveDays[forecast.selectedDay].wind);
+  const globeOptions = chartGlobalOptions(forecast.fiveDays[selectedDay].wind);
 
   var style = getComputedStyle(document.getElementById('root'));
   var labelColor = (style.getPropertyValue('--main-font-color'));
@@ -84,12 +84,12 @@ export default function WindChart() {
         }
       }
     }} data={{
-      labels: forecast.fiveDays[forecast.selectedDay].time,
+      labels: forecast.fiveDays[selectedDay].time,
       datasets: [
         {
           label: 'Dataset 1',
-          data: forecast.fiveDays[forecast.selectedDay].wind.list.map(
-            (elem, index) => ({ speed: elem.speed, direction: elem.direction, time: forecast.fiveDays[forecast.selectedDay].time[index] })),
+          data: forecast.fiveDays[selectedDay].wind.list.map(
+            (elem, index) => ({ speed: elem.speed, direction: elem.direction, time: forecast.fiveDays[selectedDay].time[index] })),
           /*      borderColor: 'blue', */
           pointRadius: 10,
           pointHoverRadius: 10,

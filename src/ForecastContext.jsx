@@ -54,13 +54,6 @@ function forecastReducer(forecast, action) {
       })
     }
 
-    case 'selectDay': {
-      return ({
-        ...forecast,
-        selectedDay: action.payload
-      })
-    }
-
     default: {
       throw Error('Unknown action: ' + action.type);
     }

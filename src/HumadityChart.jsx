@@ -21,9 +21,9 @@ ChartJS.register(
 );
 
 
-export function HumadityChart() {
+export function HumadityChart({selectedDay}) {
   const forecast = useForecast();
-  const globeOptions = chartGlobalOptions(forecast.fiveDays[forecast.selectedDay].humidity);
+  const globeOptions = chartGlobalOptions(forecast.fiveDays[selectedDay].humidity);
 
   var style = getComputedStyle(document.getElementById('root'));
   var labelColor = (style.getPropertyValue('--main-font-color'));
@@ -48,11 +48,11 @@ export function HumadityChart() {
         }
       }
     }} data={{
-      labels: forecast.fiveDays[forecast.selectedDay].time,
+      labels: forecast.fiveDays[selectedDay].time,
       datasets: [
         {
           label: 'Dataset 1',
-          data: forecast.fiveDays[forecast.selectedDay].humidity.list,
+          data: forecast.fiveDays[selectedDay].humidity.list,
           tension: 0.5
         },
       ],
