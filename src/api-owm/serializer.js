@@ -54,31 +54,39 @@ export function serializefiveDays(data) {
   const arr = [];
   data.data.list.map(elem => {
     const unixTime = new Date(0);
-
     const dayDate = elem.dt_txt.split(" ")[0];
-    const lastArrIndex = arr.length - 1;
     unixTime.setUTCSeconds(elem.dt);
-
     let day = unixTime.toLocaleDateString("en-us", { weekday: 'long' });
 
-    if (arr[lastArrIndex]?.date !== dayDate) { //create new entry
-      arr.push({ date: dayDate, epoch: day, temp_avg: 0, time: [], weather: {d: {icon: '0'}, n: {icon: '0'}}, temp: { max: -Infinity, min: +Infinity, list: [] }, rain: { max: -Infinity, min: +Infinity, list: [] }, humidity: { max: -Infinity, min: +Infinity, list: [] }, wind: { max: -Infinity, min: +Infinity, list: [] }, list: [] })
-      return;
+    if (arr[arr.length - 1]?.date !== dayDate) { //create new entry
+      arr.push({
+        date: dayDate, epoch: day, temp_avg: 0, time: [],
+        weather: { d: { icon: '0' }, n: { icon: '0' } },
+        temp: { max: -Infinity, min: +Infinity, list: [] },
+        rain: { max: -Infinity, min: +Infinity, list: [] },
+        humidity: { max: -Infinity, min: +Infinity, list: [] },
+        wind: { max: -Infinity, min: +Infinity, list: [] }, list: []
+      })
     }
+
+    const lastArrIndex = arr.length - 1;
+
+
+
 
     //else append to it
 
     let rain = elem?.rain ? elem.rain["3h"] : 0;
     const curListLeng = arr[lastArrIndex].list.length;
-    arr[lastArrIndex].temp_avg = (
+    arr[lastArrIndex].temp_avg = Math.round(
       ((arr[lastArrIndex].temp_avg * curListLeng)
-        + elem.main.temp) / (curListLeng + 1)).toFixed(1);
+        + elem.main.temp) * 10 / (curListLeng + 1)) / 10;
 
-    arr[lastArrIndex].temp.list.push(elem.main.temp.toFixed(1));
+    arr[lastArrIndex].temp.list.push(Math.round(elem.main.temp * 10) / 10);
     if (elem.main.temp > arr[lastArrIndex].temp.max) arr[lastArrIndex].temp.max = elem.main.temp;
     if (elem.main.temp < arr[lastArrIndex].temp.min) arr[lastArrIndex].temp.min = elem.main.temp;
 
-    let resWindSpeed = (elem.wind.speed * 3.6).toFixed(1);
+    let resWindSpeed = Math.round((elem.wind.speed * 3.6 * 10) / 10);
     arr[lastArrIndex].wind.list.push({
       speed: resWindSpeed,
       direction: elem.wind.deg,
