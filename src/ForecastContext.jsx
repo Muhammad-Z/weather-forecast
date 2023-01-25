@@ -47,13 +47,6 @@ function forecastReducer(forecast, action) {
         fiveDays: action.payload
       })
     }
-    case 'loadForecast12Hours': {
-      return ({
-        ...forecast,
-        [action.payload[0].EpochDateTime]: action.payload
-      })
-    }
-
     default: {
       throw Error('Unknown action: ' + action.type);
     }
