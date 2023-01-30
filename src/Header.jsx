@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getCities } from './api-owm/callAPI';
+import { getCities, getReverseGeo } from './api-owm/callAPI';
 import { useForecast, useForecastDispatch } from "./ForecastContext";
 import SearchList from './SearchList';
 import darkIcon from './dark-icon.png';
@@ -25,12 +25,18 @@ export default function Header({ setTheme }) {
     function loadPosition(position) {
       console.log('pos , ', position)
 
-      dispatch({
-        type: 'loadLocation', payload: {
-          lat: position.coords.latitude,
-          lon: position.coords.longitude,
-        }
-      })
+      getReverseGeo({
+        lat: position.coords.latitude,
+        lon: position.coords.longitude
+      }).then
+        (res => dispatch({
+          type: 'loadLocation', payload: {
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+            name: res.data[0].state,
+            country: res.data[0].country,
+          }
+        }))
     }
 
 
